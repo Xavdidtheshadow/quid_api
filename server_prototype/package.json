@@ -1,0 +1,15 @@
+{
+  "name": "server_prototype",
+  "version": "1.0.0",
+  "description": "quidditch query server prototype",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.10.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
