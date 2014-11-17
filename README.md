@@ -1,4 +1,3 @@
-quidditch_schemas
-=================
+# quidditch_schemas
 
-Collection of schemas and starting points
+Everything is empty right now, so add in your region's info!
