@@ -5,6 +5,39 @@ module.exports = function(app) {
   var League = mongoose.model('League');
   var Game = mongoose.model('Game');
 
+  // GET
+
+  app.get('/leagues', function(req, res, next){
+    League
+      .find(function(err, teams){
+        if(err){return next(err);}
+        res.json(teams);
+      });
+  });
+
+  app.get('/leagues/:id/teams', function(req, res, next){
+    var id = '';
+    if (req.params.id.length < 5){
+      League
+        .findOne({"abbreviation": req.params.id})
+        .exec(function(err, league){
+          if(err){return next(err);}
+          id = league._id;
+        });
+    }
+    else {
+      id = req.params.id;
+    }  
+
+    // need to have this wait for first query to finish, if it's happening
+    Team
+      .find({"league": id})
+      .exec(function(err, teams){
+        if(err){return next(err);}
+        res.json(teams);
+      });
+  });
+
   app.get('/teams', function(req, res, next){
     Team
       .find(function(err, teams){
@@ -14,27 +47,27 @@ module.exports = function(app) {
   });
 
   app.get("/people/:q", function(req, res, next) {
-      var query = {};
-      if (req.params.q.match(/@/)){
-        query = {"email": req.params.q};
-      }
-      else {
-        query = {"_id": req.params.q};
-      }     
+    var query = {};
+    if (req.params.q.match(/@/)){
+      query = {"email": req.params.q};
+    }
+    else {
+      query = {"_id": req.params.q};
+    }     
 
-      Person
-        .findOne(query)
-        .populate('team')
-        .exec(function(err, person){
-          if(err){return next(err);}
-          res.json(person);
-        });
+    Person
+      .findOne(query)
+      .populate('team')
+      .exec(function(err, person){
+        if(err){return next(err);}
+        res.json(person);
+      });
   });
 
   app.put("/people/:id/certify/:test", function(req, res, next){
     var t = {n: "certifications." + req.params.test};
     var p = Person
-      .update({"_id": req.params.id}, {"$set": {t.n: true}})
+      .update({"_id": req.params.id}, {"$set": {t: true}})
       .exec(function(err, person){
         if(err){return next(err);}
         res.json(person);
