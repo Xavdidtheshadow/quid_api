@@ -13,6 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(db.url);
 require('./models/Persons.js');
+require('./models/Games.js');
+require('./models/Leagues.js');
+require('./models/Teams.js');
 
 
 
