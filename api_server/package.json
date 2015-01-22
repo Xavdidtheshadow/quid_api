@@ -11,5 +11,6 @@
     "start": "node app.js"
   },
   "author": "",
+  "private": true,
   "license": "ISC"
 }
