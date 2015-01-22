@@ -46,6 +46,17 @@ module.exports = function(app) {
       });
   });
 
+  app.get("/people", function(req, res, next){
+    Person
+      .find()
+      .populate('team')
+      .populate('league')
+      .exec(function(err, people){
+        if(err){return next(err);}
+        res.json(people);
+      });
+  });
+
   app.get("/people/:q", function(req, res, next) {
     var query = {};
     if (req.params.q.match(/@/)){
