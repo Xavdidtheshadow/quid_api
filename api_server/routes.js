@@ -92,13 +92,21 @@ module.exports = function(app) {
   });
 
   app.put("/people/:id/certify/:test", function(req, res, next){
-    var t = {n: "certifications." + req.params.test};
-    var p = Person
-      .update({"_id": req.params.id}, {"$set": {t: true}})
+    // multiple steps to use a variable as an object key
+    var to_update = {};
+    to_update["certifications." + req.params.test] = true;
+
+    Person
+      .update({"_id": req.params.id}, to_update)
       .exec(function(err, person){
         if(err){return next(err);}
 
-        res.json(person);
+        if(person.length > 0) {
+          res.json({status: 200, message: 'ok'});
+        }
+        else {
+          res.json({status: 404, message: 'person not found'});
+        }
       });
   });
 
