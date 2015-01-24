@@ -11,6 +11,7 @@ module.exports = function(app) {
     League
       .find(function(err, teams){
         if(err){return next(err);}
+
         res.json(teams);
       });
   });
@@ -22,6 +23,7 @@ module.exports = function(app) {
         .findOne({"abbreviation": req.params.id})
         .exec(function(err, league){
           if(err){return next(err);}
+
           id = league._id;
         });
     }
@@ -34,6 +36,7 @@ module.exports = function(app) {
       .find({"league": id})
       .exec(function(err, teams){
         if(err){return next(err);}
+
         res.json(teams);
       });
   });
@@ -44,6 +47,7 @@ module.exports = function(app) {
       .populate('league')
       .exec(function(err, teams){
         if(err){return next(err);}
+
         res.json(teams);
       });
   });
@@ -52,17 +56,18 @@ module.exports = function(app) {
     Person
       .find()
       .populate('team')
-      // .populate('league')
       .exec(function(err, people){
         if(err){return next(err);}
+
         var opts = {
           path: 'team.league',
           model: 'League',
           select: 'name abbreviation'
         };
-
+        // nested populate
         Person.populate(people, opts, function(err, people){
           if(err){return next(err);}
+
           res.json(people);
         });
       });
@@ -92,6 +97,7 @@ module.exports = function(app) {
       .update({"_id": req.params.id}, {"$set": {t: true}})
       .exec(function(err, person){
         if(err){return next(err);}
+
         res.json(person);
       });
   });
@@ -103,6 +109,7 @@ module.exports = function(app) {
 
     p.save(function(err, pers){
       if(err){return next(err);}
+
       res.json(pers);
     });
   });
@@ -110,14 +117,13 @@ module.exports = function(app) {
   app.post("/leagues", function(req, res, next){
     var l = new League(req.body);
 
-    // console.log(req.body);
-
     if (req.body.subregions){
       l.subregions = req.body.subregions.split("|");
     }
 
     l.save(function(err, league){
       if(err){return next(err);}
+
       res.json(league);
     });
   });
@@ -127,11 +133,8 @@ module.exports = function(app) {
 
     t.save(function(err, team){
       if(err){return next(err);}
+
       res.json(team);
     });
   });
-
-  // app.get("/teams/:id", function(request, response) {
-  //     response.send({status: 200, results: {name: "Michigan Quidditch", id: request.params.id}});
-  // });
 };
