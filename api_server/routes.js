@@ -87,6 +87,7 @@ module.exports = function(app) {
       .populate('team')
       .exec(function(err, person){
         if(err){return next(err);}
+
         res.json(person);
       });
   });
@@ -118,7 +119,7 @@ module.exports = function(app) {
     p.save(function(err, pers){
       if(err){return next(err);}
 
-      res.json(pers);
+      res.json({status: 201, message: pers._id});
     });
   });
 
@@ -132,7 +133,7 @@ module.exports = function(app) {
     l.save(function(err, league){
       if(err){return next(err);}
 
-      res.json(league);
+      res.json({status: 201, message: league._id});
     });
   });
 
@@ -142,7 +143,7 @@ module.exports = function(app) {
     t.save(function(err, team){
       if(err){return next(err);}
 
-      res.json(team);
+      res.json({status: 201, message: team._id});
     });
   });
 };
