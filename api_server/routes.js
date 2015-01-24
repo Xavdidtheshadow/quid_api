@@ -40,7 +40,9 @@ module.exports = function(app) {
 
   app.get('/teams', function(req, res, next){
     Team
-      .find(function(err, teams){
+      .find()
+      .populate('league')
+      .exec(function(err, teams){
         if(err){return next(err);}
         res.json(teams);
       });
@@ -50,10 +52,19 @@ module.exports = function(app) {
     Person
       .find()
       .populate('team')
-      .populate('league')
+      // .populate('league')
       .exec(function(err, people){
         if(err){return next(err);}
-        res.json(people);
+        var opts = {
+          path: 'team.league',
+          model: 'League',
+          select: 'name abbreviation'
+        };
+
+        Person.populate(people, opts, function(err, people){
+          if(err){return next(err);}
+          res.json(people);
+        });
       });
   });
 
