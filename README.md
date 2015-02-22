@@ -4,4 +4,4 @@ The definitive api for storing quidditch information in databases.
 
 ## Server
 
-Run the server with `npm start`. It currently connects to your local mongodb instance (run with `mongod`) and will complain if it can't. 
+Run the server with `foreman start`, which'll handle running your local mongo database along with the webserver itself.
