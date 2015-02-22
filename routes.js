@@ -73,6 +73,17 @@ module.exports = function(app) {
       });
   });
 
+  app.get("/games", function(req, res, next){
+    Game
+      .find()
+      .populate("team_a team_b head_referee snitch", 'name certifications')
+      .exec(function(err, games){
+        if(err){return next(err);}
+
+        res.json(games);
+      });
+  });
+
   app.get("/people/:q", function(req, res, next) {
     var query = {};
     if (req.params.q.match(/@/)){
@@ -126,9 +137,9 @@ module.exports = function(app) {
   app.post("/leagues", function(req, res, next){
     var l = new League(req.body);
 
-    if (req.body.subregions){
-      l.subregions = req.body.subregions.split("|");
-    }
+    // if (req.body.subregions){
+    //   l.subregions = req.body.subregions.split("|");
+    // }
 
     l.save(function(err, league){
       if(err){return next(err);}
@@ -144,6 +155,18 @@ module.exports = function(app) {
       if(err){return next(err);}
 
       res.json({status: 201, message: team._id});
+    });
+  });
+
+  app.post("/games", function(req, res, next){
+    var g = new Game(req.body);
+
+    console.log(req.body);
+
+    g.save(function(err, game){
+      if(err){return next(err);}
+
+      res.json({status: 201, message: game._id});
     });
   });
 };

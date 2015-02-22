@@ -6,24 +6,31 @@ var GameSchema = new mongoose.Schema({
 
   team_a: {type: mongoose.Schema.Types.ObjectId, ref: "Team", required: true},
   team_b: {type: mongoose.Schema.Types.ObjectId, ref: "Team", required: true},
-  team_a_score: {type: Number, required: true},
-  team_b_score: {type: Number, required: true},
+  // scores not required so that we can use these to schedule
+  team_a_score: {type: Number},
+  team_b_score: {type: Number},
 
-  // 0 or 1
-  rt_snitch: {type: String, match: /[ab]/, required: true},
-  ot_snitch: {type: String, match: /[ab]/, default: null},
-  sd_snitch: {type: String, match: /[ab]/, default: null},
+  // team_a's _id|team_b's _id
+  // makes document a little bigger, but aggregation is easier
+
+  // rt snitch should be required. maybe a difference between game schedule and game result?
+  rt_snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Team", default: null},
+  ot_snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Team", default: null},
+  sd_snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Team", default: null},
 
   // game time, in seconds
   duration: Number,
-  mutli_league: {type: Boolean, default: false},
+
+  // this is denoted by the leagues of the teams
+  // mutli_league: {type: Boolean, default: false},
   
   head_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
   snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
 
   forfeit: {type: Boolean, default: false},
 
-  etc: Object
+  // this was for storing sr, ar info, but we don't need that in the schema?
+  // etc: mongoose.Schema.Types.Mixed
 });
 
 mongoose.model('Game', GameSchema);

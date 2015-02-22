@@ -1,7 +1,7 @@
-# quidditch_schemas
+# quid_api
 
-Everything is empty right now, so add in your region's info!
+The definitive api for storing quidditch information in databases. 
 
 ## Server
 
-Run the server with `npm start` from the server directory. Doesn't do much yet, but I'm going to build out the database interface and then we can plug in whatever we want as the database later. 
+Run the server with `npm start`. It currently connects to your local mongodb instance (run with `mongod`) and will complain if it can't. 
