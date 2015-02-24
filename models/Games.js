@@ -7,8 +7,8 @@ var GameSchema = new mongoose.Schema({
   team_a: {type: mongoose.Schema.Types.ObjectId, ref: "Team", required: true},
   team_b: {type: mongoose.Schema.Types.ObjectId, ref: "Team", required: true},
   // scores not required so that we can use these to schedule
-  team_a_score: {type: Number},
-  team_b_score: {type: Number},
+  team_a_score: {type: Number, default: 0},
+  team_b_score: {type: Number, default: 0},
 
   // team_a's _id|team_b's _id
   // makes document a little bigger, but aggregation is easier
@@ -20,6 +20,7 @@ var GameSchema = new mongoose.Schema({
 
   // game time, in seconds
   duration: Number,
+  details: {type: mongoose.Schema.Types.ObjectId, ref: "Detail"},
 
   // this is denoted by the leagues of the teams
   // mutli_league: {type: Boolean, default: false},

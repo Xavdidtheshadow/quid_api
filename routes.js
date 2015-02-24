@@ -55,7 +55,7 @@ module.exports = function(app) {
   app.get("/people", function(req, res, next){
     Person
       .find()
-      .populate('team')
+      .populate('teams requests')
       .exec(function(err, people){
         if(err){return next(err);}
 
@@ -95,7 +95,7 @@ module.exports = function(app) {
 
     Person
       .findOne(query)
-      .populate('team')
+      .populate('teams')
       .exec(function(err, person){
         if(err){return next(err);}
 

@@ -13,7 +13,10 @@ var PersonSchema = new mongoose.Schema({
     hr_field: {type: Boolean, default: false},
     td: {type: Boolean, default: false}
   },
-  team: {type: mongoose.Schema.Types.ObjectId, ref: "Team"}
+  // there are enough multiple team affiliations that it's worth having an arrary. The first spot will always be for the primary team
+  teams: [{type: mongoose.Schema.Types.ObjectId, ref: "Team"}],
+  requests: {type: [{type: mongoose.Schema.Types.ObjectId, ref: "Team"}], default: []}
+
 });
 
 mongoose.model('Person', PersonSchema);
