@@ -9,9 +9,10 @@ var PersonSchema = new mongoose.Schema({
   certifications: {
     ar: {type: Boolean, default: false},
     sr: {type: Boolean, default: false},
-    hr_written: {type: Boolean, default: false},
-    hr_field: {type: Boolean, default: false},
-    td: {type: Boolean, default: false}
+    // hr_written: {type: Boolean, default: false},
+    hr: {type: Boolean, default: false},
+    // maybe nice later, but not needed now
+    // td: {type: Boolean, default: false}
   },
   // there are enough multiple team affiliations that it's worth having an arrary. The first spot will always be for the primary team
   teams: [{type: mongoose.Schema.Types.ObjectId, ref: "Team"}],

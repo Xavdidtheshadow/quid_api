@@ -20,13 +20,20 @@ var GameSchema = new mongoose.Schema({
 
   // game time, in seconds
   duration: Number,
-  details: {type: mongoose.Schema.Types.ObjectId, ref: "Detail"},
 
   // this is denoted by the leagues of the teams
   // mutli_league: {type: Boolean, default: false},
   
+  // these should be required. Maybe a validate game route to double check this stuff? or confirm?
   head_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
   snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
+
+  snitch_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
+  assistant_referee1: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
+  assistant_referee2: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
+  scorekeepers: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
+  goal_refs: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
+  
 
   forfeit: {type: Boolean, default: false},
 
