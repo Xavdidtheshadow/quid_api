@@ -6,9 +6,6 @@ var db = require('./config/db');
 
 var app = express();
 
-// these were needed so that form-encoded json was recognized. but only one line, apparently
-// app.use(bodyParser.json()); 
-// app.use(bodyParser.json({ type: 'application/vnd.api+json' })); 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 mongoose.connect(db.url);

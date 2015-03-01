@@ -5,16 +5,12 @@ var LeagueSchema = new mongoose.Schema({
 
   // United States Quidditch
   name: {type: String, required: true}, 
-  // USQ, AQA, etc
-  abbreviation: String, 
+
   // ISO 3 letter country code
   code: {type: String, required: true}, 
-  
-  // probably don't need this, it's too US centric
-  // subregions: [String]
 
-  // rulebook? useful if there's more divergence in rules
-  // notes on weird rules like off-pitch seeking?
+  // USQ, AQA, etc
+  abbreviation: String, 
 });
 
 mongoose.model('League', LeagueSchema);
