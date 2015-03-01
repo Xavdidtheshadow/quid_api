@@ -1,14 +1,16 @@
 {
   "name": "server_prototype",
-  "version": "1.0.0",
-  "description": "quidditch query server prototype",
+  "version": "0.8",
+  "description": "quidditch ",
   "main": "server.js",
   "dependencies": {
     "express": "^4.10.2",
     "mongoose": "^3.8.21",
     "body-parser": "~1.4.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "~1.3.7"  
+  },
   "scripts": {
     "start": "node server.js"
   },
