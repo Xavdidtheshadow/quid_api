@@ -16,6 +16,13 @@ var GameSchema = new mongoose.Schema({
 
   // game time, in seconds
   duration: Number,
+
+  // higher is harder
+  level: {type: Number, min: 1, max: 4, default: null},
+
+  // tournament info, 0 indexed (will display everything + 1)
+  timeslot: {type: Number, default: null},
+  pitch: {type: Number, default: null},
   
   // these should be required. Maybe a validate game route to double check this stuff? or confirm?
   head_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person", default: null},

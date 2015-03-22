@@ -17,9 +17,9 @@ require('./models/Leagues.js');
 require('./models/Teams.js');
 
 // routes
+require('./routes/people')(app); 
 require('./routes/games')(app); 
 require('./routes/leagues')(app); 
-require('./routes/people')(app); 
 require('./routes/teams')(app); 
 
 app.get("/", function(request, response) {
