@@ -23,7 +23,7 @@ require('./routes/leagues')(app);
 require('./routes/teams')(app); 
 
 app.get("/", function(request, response) {
-    response.send("Hello world!");
+    response.send("This is the quidditch scheduling API.");
 });
 
 // Start the app
