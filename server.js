@@ -5,12 +5,14 @@ var mongoose = require('mongoose');
 var db = require('./config/db');
 
 var app = express();
-var port = process.env.PORT || 1337;
+var port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 // mongoose
 mongoose.connect(db.url);
+require('./config/auth')(app);
+
 // register schemas
 require('./models/People.js');
 require('./models/Games.js');
@@ -24,7 +26,15 @@ require('./routes/leagues')(app);
 require('./routes/teams')(app); 
 
 app.get("/", function(request, response) {
-    response.send("This is the quidditch scheduling API.");
+    response.send({
+      status: 200, 
+      info: "https://github.com/quidtech/quid_api",
+      routes: [
+        '/games',
+        '/people',
+        '/teams',
+      ]
+    });
 });
 
 // Start the app

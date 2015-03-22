@@ -1,2 +1,2 @@
-mongo: mongod --quiet
+# mongo: mongod --quiet
 web: nodemon
