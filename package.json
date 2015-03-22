@@ -1,8 +1,11 @@
 {
   "name": "server_prototype",
-  "version": "0.8",
+  "version": "1.0.1",
   "description": "quidditch ",
   "main": "server.js",
+  "engines": {
+    "node": "0.10.x"
+  },
   "dependencies": {
     "express": "^4.10.2",
     "mongoose": "^3.8.21",
