@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var db = require('./config/db');
 
 var app = express();
+var port = process.env.port || 1337;
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
@@ -27,5 +28,5 @@ app.get("/", function(request, response) {
 });
 
 // Start the app
-app.listen(1337);
-console.log("App started on port 1337.");
+app.listen(port);
+console.log("App started on port " + port);
