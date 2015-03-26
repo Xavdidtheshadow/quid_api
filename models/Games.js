@@ -16,6 +16,7 @@ var GameSchema = new mongoose.Schema({
 
   // game time, in seconds
   duration: Number,
+  complete: {type: Boolean, default: false},
 
   // higher is harder
   level: {type: Number, min: 1, max: 4, default: null},

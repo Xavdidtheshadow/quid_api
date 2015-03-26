@@ -13,6 +13,17 @@ module.exports = function(app) {
       });
   });
 
+  app.get('/games/:id', function(req, res, next){
+    Game
+      .find({_id: req.params.id})
+      .populate("team_a team_b head_referee snitch", 'name certifications')
+      .exec(function(err, games){
+        if(err){return next(err);}
+
+        res.json(games);
+      });
+  });
+
   app.post("/games", function(req, res, next){
     var g = new Game(req.body);
 

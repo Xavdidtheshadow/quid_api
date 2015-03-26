@@ -13,9 +13,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 cors = require('./config/cors');
 app.use(cors);
 
+// API key
+require('./config/auth')(app);
+
 // mongoose
 mongoose.connect(db.url);
-require('./config/auth')(app);
 
 // register schemas
 require('./models/People.js');
