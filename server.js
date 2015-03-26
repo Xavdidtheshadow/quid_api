@@ -9,6 +9,10 @@ var port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
+// cors
+cors = require('./config/cors');
+app.use(cors);
+
 // mongoose
 mongoose.connect(db.url);
 require('./config/auth')(app);
