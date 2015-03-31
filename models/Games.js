@@ -15,8 +15,8 @@ var GameSchema = new mongoose.Schema({
   sd_snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Team", default: null},
 
   // game time, in seconds
-  duration: Number,
-  complete: {type: Boolean, default: false},
+  // if this is 0, the game is incomplete
+  duration: {type: Number, default: 0},
 
   // higher is harder
   level: {type: Number, min: 1, max: 4, default: null},
