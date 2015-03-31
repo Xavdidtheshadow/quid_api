@@ -14,7 +14,11 @@ module.exports = function(app) {
   });
 
   app.post("/teams", function(req, res, next){
-    var t = new Team(req.body);
+    try {
+      var t = new Team(req.body);
+    } catch (e) {
+      return next(e);
+    }
 
     t.save(function(err, team){
       if(err){return next(err);}
