@@ -57,7 +57,7 @@ module.exports = function(app) {
           res.json({status: 200, message: 'ok'});
         }
         else {
-          res.json({status: 404, message: 'person not found'});
+          res.status(404).send('Person not found');
         }
       });
   });
@@ -79,6 +79,7 @@ module.exports = function(app) {
       .findOne({"_id": req.params.id})
       .exec(function(err, person){
         if(err){return next(err);}
+        if (!person){res.status(404).send('Person not found');}
         Game
           .find({crews: {$in: person.crews}})
           .populate('team_a team_b head_referee snitch')
