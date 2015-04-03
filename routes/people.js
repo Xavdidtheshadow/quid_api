@@ -1,6 +1,7 @@
 module.exports = function(app) {
   var mongoose = require('mongoose');
   var Person = mongoose.model('Person');
+  var Game = mongoose.model('Game');
 
   app.get("/people", function(req, res, next){
     Person
@@ -64,12 +65,29 @@ module.exports = function(app) {
   app.post("/people", function(req, res, next){
     var p = new Person(req.body);
 
-    console.log(req.body);
+    // console.log(req.body);
 
     p.save(function(err, pers){
       if(err){return next(err);}
 
       res.json({status: 201, message: pers._id});
     });
+  });
+
+  app.get("/people/:id/games", function(req, res, next){
+    Person
+      .findOne({"_id": req.params.id})
+      .exec(function(err, person){
+        if(err){return next(err);}
+        Game
+          .find({crews: {$in: person.crews}})
+          .populate('team_a team_b head_referee snitch')
+          .exec(function(err, games){
+            if(err){return next(err);}
+
+            res.json(games);
+          });
+      });
+
   });
 };
