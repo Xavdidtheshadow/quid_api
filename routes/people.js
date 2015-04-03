@@ -85,7 +85,7 @@ module.exports = function(app) {
           .exec(function(err, games){
             if(err){return next(err);}
 
-            res.json(games);
+            res.json({games: games, ref: person});
           });
       });
 
