@@ -24,6 +24,17 @@ module.exports = function(app) {
       });
   });
 
+  app.get("/people/head_referees", function(req, res, next){
+    Person
+      .find({"certifications.hr": true})
+      .populate('teams')
+      .exec(function(err, people){
+        if(err){return next(err);}
+
+          res.json(people);
+        });
+      });
+
   app.get("/people/:q", function(req, res, next) {
     var query = {};
     if (req.params.q.match(/@/)){
@@ -95,7 +106,7 @@ module.exports = function(app) {
     // only words for 3 character crews
     var raw = req.params.id.toUpperCase();
     var id = raw.slice(0,2) + raw[2].toLowerCase();
-    People
+    Person
       .find({crews: id})
       .exec(function(err, crew){
         if(err){return next(err);}
@@ -109,7 +120,7 @@ module.exports = function(app) {
     // only words for 3 character crews
     var raw = req.params.id.toUpperCase();
     var id = raw.slice(0,2) + raw[2].toLowerCase();
-    Games
+    Game
       .find({crews: id})
       .exec(function(err, games){
         if(err){return next(err);}

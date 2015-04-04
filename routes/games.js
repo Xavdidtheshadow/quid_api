@@ -29,8 +29,6 @@ module.exports = function(app) {
   app.post("/games", function(req, res, next){
     var g = new Game(req.body);
 
-    console.log(req.body);
-
     g.save(function(err, game){
       if(err){return next(err);}
 

@@ -29,9 +29,11 @@ var GameSchema = new mongoose.Schema({
   head_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person", default: null},
   snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Person", default: null},
 
-  snitch_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
-  assistant_referee_a: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
-  assistant_referee_b: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
+  crews: {type: [String], default: []},
+
+  // snitch_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
+  // assistant_referee_a: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
+  // assistant_referee_b: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
 
   // assigned teams
   scorekeepers: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
