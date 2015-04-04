@@ -37,7 +37,6 @@ module.exports = function(app) {
 
         res.json(team);
       });
-
   });
 
   app.get("/teams/:id/games", function(req, res, next){

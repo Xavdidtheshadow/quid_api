@@ -89,6 +89,19 @@ module.exports = function(app) {
             res.json({games: games, ref: person});
           });
       });
+  });
 
+  app.get('/crews/:id', function(req, res, next){
+    // only words for 3 character crews
+    var raw = req.params.id.toUpperCase();
+    var id = raw.slice(0,2) + raw[2].toLowerCase();
+    People
+      .find({crews: id})
+      .exec(function(err, crew){
+        if(err){return next(err);}
+        if (!crew){res.status(404).send('Crew not found');}
+
+        res.json({crew: id, people: crew});
+      });
   });
 };
