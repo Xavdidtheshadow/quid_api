@@ -1,10 +1,17 @@
 module.exports = function(app) {
   var mongoose = require('mongoose');
   var Game = mongoose.model('Game');
+  var extend = require('util')._extend;
 
   app.get("/games", function(req, res, next){
+    var query = {};
+
+    // query params
+    if (req.query.pitch) {extend(query, {pitch: req.query.pitch});}
+    if (req.query.after) {extend(query, {timeslot: {$gt: req.query.after}});}
+
     Game
-      .find()
+      .find(query)
       // this works because mongoose just ignores fields it can't populate
       .populate("team_a team_b head_referee snitch")
       // .populate()

@@ -9,18 +9,18 @@ module.exports = function(app) {
       .populate('teams requests')
       .exec(function(err, people){
         if(err){return next(err);}
+        // don't care about league right now
+        // var opts = {
+        //   path: 'team.league',
+        //   model: 'League',
+        //   select: 'name abbreviation'
+        // };
+        // // nested populate
+        // Person.populate(people, opts, function(err, people){
+        //   if(err){return next(err);}
 
-        var opts = {
-          path: 'team.league',
-          model: 'League',
-          select: 'name abbreviation'
-        };
-        // nested populate
-        Person.populate(people, opts, function(err, people){
-          if(err){return next(err);}
-
-          res.json(people);
-        });
+        res.json(people);
+        // });
       });
   });
 
@@ -88,6 +88,7 @@ module.exports = function(app) {
   app.get("/people/:id/games", function(req, res, next){
     Person
       .findOne({"_id": req.params.id})
+      .populate('teams')
       .exec(function(err, person){
         if(err){return next(err);}
         if (!person){res.status(404).send('Person not found');}
@@ -118,6 +119,7 @@ module.exports = function(app) {
     var id = raw.slice(0,2) + raw[2].toLowerCase();
     Person
       .find({crews: id})
+      .populate('teams')
       .exec(function(err, crew){
         if(err){return next(err);}
         if (!crew){res.status(404).send('Crew not found');}
