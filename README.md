@@ -8,5 +8,5 @@ Run the server with `foreman start -f Procfile.dev -p 3000` after installing the
 
 ## Todo
 - [ ] Testing suite [link](https://github.com/jedwood/api-testing-with-node)
-- [ ] API keys
+- [x] API keys
 - [ ] Admin interface?
