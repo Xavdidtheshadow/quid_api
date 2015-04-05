@@ -102,6 +102,16 @@ module.exports = function(app) {
       });
   });
 
+  app.get('/crews', function(req, res, next){
+    Person
+      .distinct('crews')
+      .exec(function(err, crews){
+        if(err){return next(err);}
+        res.json(crews.sort());
+      });
+
+  });
+
   app.get('/crews/:id', function(req, res, next){
     // only words for 3 character crews
     var raw = req.params.id.toUpperCase();
@@ -120,8 +130,15 @@ module.exports = function(app) {
     // only words for 3 character crews
     var raw = req.params.id.toUpperCase();
     var id = raw.slice(0,2) + raw[2].toLowerCase();
+    var query = id;
+    if (id[2] === 'a') {
+      console.log('npr');
+      id = ['A'+id.slice(1,3), 'B'+id.slice(1,3)]; 
+      query = {$in: id};
+    }
     Game
-      .find({crews: id})
+      .find({crews: query})
+      .populate("team_a team_b head_referee snitch")
       .exec(function(err, games){
         if(err){return next(err);}
         if (!games){res.status(404).send('Crew not found');}
