@@ -61,4 +61,19 @@ module.exports = function(app) {
       res.json({status: 201, message: game._id});
     });
   });
+
+  app.put("/games/hr", function(req, res, next){
+    var g = req.body;
+    Game
+      .findOne({_id: g.id})
+      .exec(function(err, game){
+        if(err){return next(err);}
+        game.head_referee = g.hr;
+        game.save(function(err, game){
+          if(err){return next(err);}
+
+          res.json({status: 202, message: game._id});
+        });
+      });
+  });
 };
