@@ -14,8 +14,7 @@ module.exports = function(app) {
     Game
       .find(query)
       // this works because mongoose just ignores fields it can't populate
-      .populate("team_a team_b head_referee snitch")
-      // .populate()
+      .populate("team_a team_b head_referee snitch staff")
       .exec(function(err, games){
         if(err){return next(err);}
 
@@ -26,7 +25,7 @@ module.exports = function(app) {
   app.get('/games/:id', function(req, res, next){
     Game
       .findOne({_id: req.params.id})
-      .populate("team_a team_b head_referee snitch")
+      .populate("team_a team_b head_referee snitch staff")
       .exec(function(err, game){
         if(err){return next(err);}
         if (!game){res.status(404).send('Game not found');}
@@ -34,7 +33,6 @@ module.exports = function(app) {
         if(req.query.crews) {
           Person
             .find({crews: {$in: game.crews}})
-            // .populate('teams')
             .exec(function(err, refs){
               if(err){return next(err);}
               res.json({game: game, refs: refs});
