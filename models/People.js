@@ -24,7 +24,9 @@ var PersonSchema = new mongoose.Schema({
   crews: [String],
 
   // primary/current team is always first
-  teams: {type: [{type: mongoose.Schema.Types.ObjectId, ref: "Team"}], default: []},
+  // this is no longer an array. that's silly.
+  teams: {type: {type: mongoose.Schema.Types.ObjectId, ref: "Team"}, default: null},
+  // previous teams
   requests: {type: [{type: mongoose.Schema.Types.ObjectId, ref: "Team"}], default: []}
 });
 
