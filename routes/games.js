@@ -17,8 +17,16 @@ module.exports = function(app) {
       .populate("team_a team_b head_referee snitch staff")
       .exec(function(err, games){
         if(err){return next(err);}
-
-        res.json(games);
+        var g = games.sort(function(a, b){
+          if (a.timeslot === b.timeslot){
+            return a.pitch - b.pitch;
+          }
+          else {
+            return a.timeslot - b.timeslot;
+          }
+        });
+        console.log(g);
+        res.json(g);
       });
   });
 
