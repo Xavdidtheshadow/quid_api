@@ -40,6 +40,9 @@ module.exports = function(app) {
     if (req.params.q.match(/@/)){
       query = {"email": req.params.q};
     }
+    else if (req.params.q.match(/ /)){
+      query = {"name": req.params.q};
+    }
     else {
       query = {"_id": req.params.q};
     }     
