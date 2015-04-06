@@ -50,9 +50,8 @@ module.exports = function(app) {
         Game
           .find({$or: [
             {team_a: id}, 
-            {team_b: id}, 
-            {scorekeepers: id}, 
-            {goal_refs: id}]})
+            {team_b: id},  
+            {staff: id}]})
           .populate('team_a team_b head_referee snitch')
           .exec(function(err, games){
             if(err){return next(err);}
