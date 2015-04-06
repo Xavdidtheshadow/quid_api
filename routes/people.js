@@ -42,20 +42,25 @@ module.exports = function(app) {
       .exec(function(err, person){
         if(err){return next(err);}
         if (!person){res.status(404).send('Person not found');}
-        Game
-          .find({$or: [
-            {head_referee: person._id},
-            {snitch: person._id},
-            {team_a: person.team._id},
-            {team_b: person.team._id},
-            {crews: {$in: person.crews}}
-          ]})
-          .populate('team_a team_b head_referee snitch')
-          .exec(function(err, games){
-            if(err){return next(err);}
+        try {
+          Game
+            .find({$or: [
+              {head_referee: person._id},
+              {snitch: person._id},
+              {team_a: person.team._id},
+              {team_b: person.team._id},
+              {crews: {$in: person.crews}}
+            ]})
+            .populate('team_a team_b head_referee snitch')
+            .exec(function(err, games){
+              if(err){return next(err);}
 
-            res.json({games: games, ref: person});
-          });
+              res.json({games: games, ref: person});
+            });
+          }
+          catch(e) {
+            res.status(404).send('Person not found');
+          }
       });
   });
 
