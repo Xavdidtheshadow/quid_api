@@ -1,6 +1,7 @@
 module.exports = function(app) {
   var mongoose = require('mongoose');
   var Game = mongoose.model('Game');
+  var Person = mongoose.model('Person');
   var extend = require('util')._extend;
 
   app.get("/games", function(req, res, next){
@@ -24,12 +25,24 @@ module.exports = function(app) {
 
   app.get('/games/:id', function(req, res, next){
     Game
-      .find({_id: req.params.id})
+      .findOne({_id: req.params.id})
       .populate("team_a team_b head_referee snitch")
-      .exec(function(err, games){
+      .exec(function(err, game){
         if(err){return next(err);}
+        if (!game){res.status(404).send('Game not found');}
 
-        res.json(games);
+        if(req.query.crews) {
+          Person
+            .find({crews: {$in: game.crews}})
+            // .populate('teams')
+            .exec(function(err, refs){
+              if(err){return next(err);}
+              res.json({game: game, refs: refs});
+            });
+        }
+        else {
+          res.json(game);
+        }
       });
   });
 
