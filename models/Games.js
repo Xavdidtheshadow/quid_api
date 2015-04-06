@@ -36,8 +36,10 @@ var GameSchema = new mongoose.Schema({
   // assistant_referee_b: {type: mongoose.Schema.Types.ObjectId, ref: "Person"},
 
   // assigned teams
-  scorekeepers: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
-  goal_refs: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
+  // scorekeepers: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
+  // goal_refs: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
+
+  staff: {type: [mongoose.Schema.Types.ObjectId], ref: "Team"},
 
   forfeit: {type: Boolean, default: false},
 });
