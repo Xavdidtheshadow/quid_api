@@ -33,7 +33,31 @@ module.exports = function(app) {
 
           res.json(people);
         });
+  });
+
+  app.get("/people/:id/games", function(req, res, next){
+    Person
+      .findOne({"_id": req.params.id})
+      .populate('team')
+      .exec(function(err, person){
+        if(err){return next(err);}
+        if (!person){res.status(404).send('Person not found');}
+        Game
+          .find({$or: [
+            {head_referee: person._id},
+            {snitch: person._id},
+            {team_a: person.team._id},
+            {team_b: person.team._id},
+            {crews: {$in: person.crews}}
+          ]})
+          .populate('team_a team_b head_referee snitch')
+          .exec(function(err, games){
+            if(err){return next(err);}
+
+            res.json({games: games, ref: person});
+          });
       });
+  });
 
   app.get("/people/:q", function(req, res, next) {
     var query = {};
@@ -86,24 +110,6 @@ module.exports = function(app) {
 
       res.json({status: 201, message: pers._id});
     });
-  });
-
-  app.get("/people/:id/games", function(req, res, next){
-    Person
-      .findOne({"_id": req.params.id})
-      .populate('team')
-      .exec(function(err, person){
-        if(err){return next(err);}
-        if (!person){res.status(404).send('Person not found');}
-        Game
-          .find({crews: {$in: person.crews}})
-          .populate('team_a team_b head_referee snitch')
-          .exec(function(err, games){
-            if(err){return next(err);}
-
-            res.json({games: games, ref: person});
-          });
-      });
   });
 
   app.get('/crews', function(req, res, next){
