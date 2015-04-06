@@ -39,7 +39,7 @@ var GameSchema = new mongoose.Schema({
   // scorekeepers: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
   // goal_refs: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
 
-  staff: {type: [mongoose.Schema.Types.ObjectId], ref: "Team"},
+  staff: {type: mongoose.Schema.Types.ObjectId, ref: "Team"},
 
   forfeit: {type: Boolean, default: false},
 });
