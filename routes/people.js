@@ -35,6 +35,17 @@ module.exports = function(app) {
         });
   });
 
+  app.get("/people/snitches", function(req, res, next){
+    Person
+      .find({"certifications.snitch": true})
+      // .populate('team')
+      .exec(function(err, people){
+        if(err){return next(err);}
+
+          res.json(people);
+        });
+  });
+
   app.get("/people/:id/games", function(req, res, next){
     Person
       .findOne({"_id": req.params.id})

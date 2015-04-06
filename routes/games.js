@@ -25,7 +25,6 @@ module.exports = function(app) {
             return a.timeslot - b.timeslot;
           }
         });
-        console.log(g);
         res.json(g);
       });
   });
@@ -69,6 +68,21 @@ module.exports = function(app) {
       .exec(function(err, game){
         if(err){return next(err);}
         game.head_referee = g.hr;
+        game.save(function(err, game){
+          if(err){return next(err);}
+
+          res.json({status: 202, message: game._id});
+        });
+      });
+  });
+
+  app.put("/games/snitch", function(req, res, next){
+    var g = req.body;
+    Game
+      .findOne({_id: g.id})
+      .exec(function(err, game){
+        if(err){return next(err);}
+        game.snitch = g.snitch;
         game.save(function(err, game){
           if(err){return next(err);}
 

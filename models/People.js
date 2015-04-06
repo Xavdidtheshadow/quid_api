@@ -19,6 +19,7 @@ var PersonSchema = new mongoose.Schema({
     ar: {type: Boolean, default: false},
     sr: {type: Boolean, default: false},
     hr: {type: Boolean, default: false},
+    snitch: {type: Boolean, default: false}
   },
 
   crews: [String],
