@@ -42,7 +42,7 @@ module.exports = function(app) {
       .exec(function(err, person){
         if(err){return next(err);}
         if (!person){res.status(404).send('Person not found');}
-        try {
+        else {
           Game
             .find({$or: [
               {head_referee: person._id},
@@ -57,9 +57,6 @@ module.exports = function(app) {
 
               res.json({games: games, ref: person});
             });
-          }
-          catch(e) {
-            res.status(404).send('Person not found');
           }
       });
   });
