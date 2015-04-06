@@ -76,6 +76,7 @@ module.exports = function(app) {
       .populate('team')
       .exec(function(err, person){
         if(err){return next(err);}
+        if (!person){res.status(404).send('Person not found');}
 
         res.json(person);
       });
