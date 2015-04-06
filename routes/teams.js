@@ -52,7 +52,7 @@ module.exports = function(app) {
             {team_a: id}, 
             {team_b: id},  
             {staff: id}]})
-          .populate('team_a team_b head_referee snitch')
+          .populate('team_a team_b head_referee snitch staff')
           .exec(function(err, games){
             if(err){return next(err);}
 
