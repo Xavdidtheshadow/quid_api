@@ -6,7 +6,7 @@ module.exports = function(app) {
   app.get("/people", function(req, res, next){
     Person
       .find()
-      .populate('teams requests')
+      .populate('team requests')
       .exec(function(err, people){
         if(err){return next(err);}
         // don't care about league right now
@@ -27,7 +27,7 @@ module.exports = function(app) {
   app.get("/people/head_referees", function(req, res, next){
     Person
       .find({"certifications.hr": true})
-      .populate('teams')
+      .populate('team')
       .exec(function(err, people){
         if(err){return next(err);}
 
@@ -49,7 +49,7 @@ module.exports = function(app) {
 
     Person
       .findOne(query)
-      .populate('teams')
+      .populate('team')
       .exec(function(err, person){
         if(err){return next(err);}
 
@@ -91,7 +91,7 @@ module.exports = function(app) {
   app.get("/people/:id/games", function(req, res, next){
     Person
       .findOne({"_id": req.params.id})
-      .populate('teams')
+      .populate('team')
       .exec(function(err, person){
         if(err){return next(err);}
         if (!person){res.status(404).send('Person not found');}
@@ -122,7 +122,7 @@ module.exports = function(app) {
     var id = raw.slice(0,2) + raw[2].toLowerCase();
     Person
       .find({crews: id})
-      .populate('teams')
+      .populate('team')
       .exec(function(err, crew){
         if(err){return next(err);}
         if (!crew){res.status(404).send('Crew not found');}
