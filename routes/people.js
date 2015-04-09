@@ -127,13 +127,33 @@ module.exports = function(app) {
   });
 
   app.get('/crews', function(req, res, next){
-    Person
-      .distinct('crews')
-      .exec(function(err, crews){
-        if(err){return next(err);}
-        res.json(crews.sort());
+    Person.aggregate([{
+      $project: {
+        name: 1,
+        crews: 1,
+        team: 1,
+        hr: {$cond: {if: "$certifications.hr", then: true, else: false}}
+      }}, { 
+      $group: {
+        _id: "$crews",
+        size: {$sum: 1},
+        hr: {$addToSet: "$hr"}
+      }}, {
+      $project: {
+        hr: {$anyElementTrue: "$hr"},
+        size: 1
+        // _id: {$first: "$crews"}
+      }}
+    ])
+    .exec(function(err, crews){
+      if(err){return next(err);}
+      var singleIds = [];
+      crews.forEach(function(e){
+        e._id = e._id[0];
+        singleIds.push(e);
       });
-
+      res.json(singleIds);
+    });
   });
 
   app.get('/crews/:id', function(req, res, next){
