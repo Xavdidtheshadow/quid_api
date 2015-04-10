@@ -2,6 +2,7 @@ module.exports = function(app) {
   var mongoose = require('mongoose');
   var Person = mongoose.model('Person');
   var Game = mongoose.model('Game');
+  var Team = mongoose.model('Team');
 
   app.get("/people", function(req, res, next){
     Person
@@ -132,27 +133,36 @@ module.exports = function(app) {
         name: 1,
         crews: 1,
         team: 1,
-        hr: {$cond: {if: "$certifications.hr", then: true, else: false}}
+        hr: {$cond: {if: "$certifications.hr", then: true, else: false}},
       }}, { 
       $group: {
         _id: "$crews",
         size: {$sum: 1},
+        team: {$first: "$team"},
         hr: {$addToSet: "$hr"}
       }}, {
       $project: {
         hr: {$anyElementTrue: "$hr"},
-        size: 1
+        size: 1,
+        team: 1
         // _id: {$first: "$crews"}
       }}
     ])
+
     .exec(function(err, crews){
       if(err){return next(err);}
       var singleIds = [];
-      crews.forEach(function(e){
-        e._id = e._id[0];
-        singleIds.push(e);
+      Team.populate(crews, {path: "team"}, function(err, crews){
+        if(err){return next(err);}
+
+        crews.forEach(function(e){
+          // don't want subdocs
+          e._id = e._id[0];
+          // e.team = e.team.name;
+          singleIds.push(e);
+        });
+        res.json(singleIds);
       });
-      res.json(singleIds);
     });
   });
 
