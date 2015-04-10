@@ -61,7 +61,7 @@ module.exports = function(app) {
     });
   });
 
-  app.put("/games/hr", function(req, res, next){
+  app.post("/games/hr", function(req, res, next){
     var g = req.body;
     Game
       .findOne({_id: g.id})
@@ -76,7 +76,7 @@ module.exports = function(app) {
       });
   });
 
-  app.put("/games/snitch", function(req, res, next){
+  app.post("/games/snitch", function(req, res, next){
     var g = req.body;
     Game
       .findOne({_id: g.id})
