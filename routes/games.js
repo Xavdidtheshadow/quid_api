@@ -63,6 +63,7 @@ module.exports = function(app) {
 
   app.post("/games/hr", function(req, res, next){
     var g = req.body;
+    console.log(g);
     Game
       .findOne({_id: g.id})
       .exec(function(err, game){
