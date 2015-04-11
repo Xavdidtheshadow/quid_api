@@ -193,7 +193,8 @@ module.exports = function(app) {
     var query = id;
     if (id[id.length-1] === 'a') {
       console.log('npr');
-      id = ['A'+id.slice(1,3), 'B'+id.slice(1,3)]; 
+      id = ['A'+id.slice(1,id.length), 'B'+id.slice(1,id.length)]; 
+      console.log(id);
       query = {$in: id};
     }
     Game
