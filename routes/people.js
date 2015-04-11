@@ -116,6 +116,7 @@ module.exports = function(app) {
   });
 
   app.post("/people", function(req, res, next){
+    console.log(req.body)
     var p = new Person(req.body);
 
     // console.log(req.body);
@@ -146,6 +147,9 @@ module.exports = function(app) {
         size: 1,
         team: 1
         // _id: {$first: "$crews"}
+      }}, {
+      $sort: {
+        _id: 1
       }}
     ])
 
@@ -169,7 +173,8 @@ module.exports = function(app) {
   app.get('/crews/:id', function(req, res, next){
     // only words for 3 character crews
     var raw = req.params.id.toUpperCase();
-    var id = raw.slice(0,2) + raw[2].toLowerCase();
+    console.log(raw);
+    var id = raw.slice(0,raw.length-1) + raw[raw.length-1].toLowerCase();
     Person
       .find({crews: id})
       .populate('team')
@@ -184,9 +189,9 @@ module.exports = function(app) {
   app.get('/crews/:id/games', function(req, res, next){
     // only words for 3 character crews
     var raw = req.params.id.toUpperCase();
-    var id = raw.slice(0,2) + raw[2].toLowerCase();
+    var id = raw.slice(0,raw.length-1) + raw[raw.length-1].toLowerCase();
     var query = id;
-    if (id[2] === 'a') {
+    if (id[id.length-1] === 'a') {
       console.log('npr');
       id = ['A'+id.slice(1,3), 'B'+id.slice(1,3)]; 
       query = {$in: id};
