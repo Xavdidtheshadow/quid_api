@@ -36,17 +36,18 @@ module.exports = function(app) {
       .exec(function(err, game){
         if(err){return next(err);}
         if (!game){res.status(404).send('Game not found');}
-
-        if(req.query.crews) {
-          Person
-            .find({crews: {$in: game.crews}})
-            .exec(function(err, refs){
-              if(err){return next(err);}
-              res.json({game: game, refs: refs});
-            });
-        }
         else {
-          res.json(game);
+          if(req.query.crews) {
+            Person
+              .find({crews: {$in: game.crews}})
+              .exec(function(err, refs){
+                if(err){return next(err);}
+                res.json({game: game, refs: refs});
+              });
+          }
+          else {
+            res.json(game);
+          }
         }
       });
   });
