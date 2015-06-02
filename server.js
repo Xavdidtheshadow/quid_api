@@ -43,6 +43,13 @@ app.get("/", function(request, response) {
     });
 });
 
+// catch-all error handling
+app.use(function (err, req, res, next) {
+    res.status(500);
+    res.json({ error: err });
+  }
+);
+
 // Start the app
 app.listen(port);
 console.log("App started on port " + port);
