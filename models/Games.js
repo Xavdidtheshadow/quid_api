@@ -5,8 +5,11 @@ var GameSchema = new mongoose.Schema({
   teams: {type: [{type: mongoose.Schema.Types.ObjectId, ref: "Team"}], required: true},
 
   // scores not required so that we can use these to schedule
-  points: {type: [Number], default: [0,0]},
+  scores: {type: [Number], default: [0,0]},
 
+  // a complete 0 overtime game will always have an id at 0
+  // a complete 1 overtime game may have a non-null at 1
+  // a complete 2 overtime game may have between 1 and 3 non-null elements
   snitch_snatches: {type: [mongoose.Schema.Types.ObjectId], ref: "Team", default: [null, null, null]},
 
   // number of overtimes
@@ -14,15 +17,22 @@ var GameSchema = new mongoose.Schema({
 
   // game time, in seconds
   // if this is 0, the game is incomplete
-  duration: {type: Number, default: 0},
+  duration: {type: Number, default: 0, min: 0},
 
+  // staff info
   head_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person", default: null},
   snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Person", default: null},
 
   forfeit: {type: Boolean, default: false},
 
   // any other notes about issues or things that wouldn't be apparent in the record
-  notes: {type: String, default: null}
+  notes: {type: String, default: null},
+
+  // TODO: should have examples on how to post this
+  // probably a long? that's standard across languages
+  date: { type: Date, default: Date.now }
+
+  // could also have location data, but it's hard to say what we want to store
 });
 
 mongoose.model('Game', GameSchema);
