@@ -1,2 +1,5 @@
-# mongo: mongod --quiet
-web: nodemon
+# each new line adds 100 to the port
+web: npm start
+# web: nodemon
+mongo: mongod --quiet
+

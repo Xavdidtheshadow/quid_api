@@ -14,6 +14,7 @@ module.exports = function(app) {
 
   app.get('/leagues/:id/teams', function(req, res, next){
     var id = '';
+
     if (req.params.id.length < 5){
       League
         .findOne({"abbreviation": req.params.id})
@@ -38,6 +39,8 @@ module.exports = function(app) {
   });
 
   app.post("/leagues", function(req, res, next){
+    console.log("top of the request");
+    console.log(req.body);
     var l = new League(req.body);
 
     // if (req.body.subregions){
@@ -45,7 +48,7 @@ module.exports = function(app) {
     // }
 
     l.save(function(err, league){
-      if(err){return next(err);}
+      if(err){console.log(err); console.log("AHHH");return next(err);}
 
       res.json({status: 201, message: league._id});
     });
