@@ -12,30 +12,31 @@ module.exports = function(app) {
       });
   });
 
-  app.get('/leagues/:id/teams', function(req, res, next){
-    var id = '';
-
-    if (req.params.id.length < 5){
-      League
-        .findOne({"abbreviation": req.params.id})
-        .exec(function(err, league){
+  app.get('/league/:id/teams', function(req, res, next){
+    // can I nest stuff like this?
+    // there might be a way to sync this better, but maybe not
+    function findTeam(league_id) {
+      Team
+        .find({"league": league_id})
+        .exec(function(err, teams){
           if(err){return next(err);}
 
-          id = league._id;
+          res.json(teams);
+        });
+    }
+
+    var league_id = '';
+    if (req.params.id.length === 3){
+      League
+        .findOne({"code": req.params.id.toUpperCase()})
+        .exec(function(err, league){
+          if(err){return next(err);}
+          findTeam(league._id);
         });
     }
     else {
-      id = req.params.id;
+      findTeam(req.params.id);
     }  
-
-    // need to have this wait for first query to finish, if it's happening
-    Team
-      .find({"league": id})
-      .exec(function(err, teams){
-        if(err){return next(err);}
-
-        res.json(teams);
-      });
   });
 
   app.post("/leagues", function(req, res, next){

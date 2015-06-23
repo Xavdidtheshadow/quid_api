@@ -7,7 +7,7 @@ var LeagueSchema = new mongoose.Schema({
   name: {type: String, required: true}, 
 
   // ISO 3 letter country code
-  code: {type: String, required: true, maxlength: 3, minlength: 3}
+  code: {type: String, required: true, maxlength: 3, minlength: 3, uppercase: true, index: true}
 });
 
 mongoose.model('League', LeagueSchema);
