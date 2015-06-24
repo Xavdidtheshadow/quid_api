@@ -7,7 +7,7 @@ module.exports = function(app) {
   app.get("/people", function(req, res, next){
     Person
       .find()
-      .populate('team requests')
+      .populate('teams')
       .exec(function(err, people){
         if(err){return next(err);}
         // don't care about league right now

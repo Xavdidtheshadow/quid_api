@@ -8,6 +8,7 @@ module.exports = function(app) {
     var query = {};
 
     // query params
+    // I don't remember why I needed to clone the query object
     if (req.query.pitch) {extend(query, {pitch: req.query.pitch});}
     if (req.query.after) {extend(query, {timeslot: {$gt: req.query.after}});}
 

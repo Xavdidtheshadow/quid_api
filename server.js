@@ -61,7 +61,12 @@ app.get("/", function(request, response) {
 // catch-all error handling
 app.use(function (err, req, res, next) {
     res.status(500);
-    res.json({ error: err });
+    // mongo errors have a code, otherwise show stacktrace
+    if (err.code) {
+      res.json({ error: err });
+    } else {
+      res.json({ error: err.stack });
+    }
   }
 );
 
