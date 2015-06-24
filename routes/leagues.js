@@ -3,6 +3,15 @@ module.exports = function(app) {
   var League = mongoose.model('League');
   var Team = mongoose.model('Team');
 
+  function getQuery(id) {
+    if (id.length === 3) {
+      return {code: id.toUpperCase()};
+    }
+    else {
+      return {_id: id};
+    }
+  }
+
   app.get('/leagues', function(req, res, next){
     League
       .find(function(err, teams){
@@ -13,23 +22,12 @@ module.exports = function(app) {
   });
 
   app.get('/leagues/:id', function(req, res, next){
-    // should write middleware to handle checking short code vs id?
-    if (req.params.id.length === 3){
-      League
-        .findOne({code: req.params.id.toUpperCase()})
-        .exec(function(err, league){
-          if(err){return next(err);}
-          res.json(league);
-        });
-    }
-    else {
-      League
-        .findOne({_id: req.params.id})
-        .exec(function(err, league){
-          if(err){return next(err);}
-          res.json(league);
-        });
-    }  
+    League
+      .findOne(getQuery(req.params.id))
+      .exec(function(err, league){
+        if(err){return next(err);}
+        res.json(league);
+      });
   });
 
   app.get('/leagues/:id/teams', function(req, res, next){
@@ -60,8 +58,6 @@ module.exports = function(app) {
   });
 
   app.post("/leagues", function(req, res, next){
-    console.log("top of the request");
-    console.log(req.body);
     var l = new League(req.body);
 
     l.save(function(err, league){

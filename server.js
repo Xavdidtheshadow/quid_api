@@ -1,11 +1,15 @@
 // require things! 
 var express = require("express");
+var app = express();
+app.locals.dev = process.env.NODE_ENV !== 'production';
+
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var db = require('./config/db');
 
-var app = express();
-var port = process.env.PORT || 3000;
+
+var port = process.env.PORT || 1337;
+
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json()); 
@@ -13,6 +17,16 @@ app.use(bodyParser.json());
 // cors
 cors = require('./config/cors');
 app.use(cors);
+// print request
+app.use(function(req, res, next){
+  if (app.locals.dev) {
+    console.log(req.method + ' - ' + req.url);
+    if (req.method === 'POST') {
+      console.log(req.body);
+    }
+    next();
+  }
+});
 
 // API key
 require('./config/auth')(app);
@@ -33,13 +47,13 @@ require('./routes/leagues')(app);
 require('./routes/teams')(app); 
 
 app.get("/", function(request, response) {
-    response.send({
-      status: 200, 
+    response.json({
       info: "https://github.com/quidtech/quid_api",
       routes: [
         '/games',
         '/people',
         '/teams',
+        '/leagues'
       ]
     });
 });
