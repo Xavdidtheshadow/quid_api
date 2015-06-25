@@ -2,16 +2,7 @@ module.exports = function(app) {
   var mongoose = require('mongoose');
   var League = mongoose.model('League');
   var Team = mongoose.model('Team');
-
-  function getQuery(id) {
-    if (id.length === 3) {
-      return {code: id.toUpperCase()};
-    }
-    else {
-      return {_id: id};
-    }
-  }
-
+  
   app.get('/leagues', function(req, res, next){
     League
       .find(function(err, teams){
@@ -23,7 +14,7 @@ module.exports = function(app) {
 
   app.get('/leagues/:id', function(req, res, next){
     League
-      .findOne(getQuery(req.params.id))
+      .findOne({_id: req.params.id})
       .exec(function(err, league){
         if(err){return next(err);}
         res.json(league);

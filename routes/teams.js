@@ -3,16 +3,7 @@ module.exports = function(app) {
   var Team = mongoose.model('Team');
   var Game = mongoose.model('Game');
   var Person = mongoose.model('Person');
-
-  function getQuery(id) {
-    if (id.length <= 4) {
-      return {short_name: id.toUpperCase()};
-    }
-    else {
-      return {_id: id};
-    }
-  }
-
+  
   app.get('/teams', function(req, res, next){
     Team
       .find()
@@ -26,7 +17,7 @@ module.exports = function(app) {
 
   app.get('/teams/:id', function(req, res, next){
     Team
-      .findOne(getQuery(id))
+      .findOne({_id: req.params.id})
       .exec(function(err, team){
         if(err){return next(err);}
         if (!team){return res.status(404).send('Team not found');}
@@ -36,39 +27,23 @@ module.exports = function(app) {
   });
 
   app.get('/teams/:id/games', function(req, res, next){
-    var id = req.params.id;
-    Team
-      .findOne(getQuery(id))
-      .exec(function(err, team){
+    Game
+      .find({teams: req.params.id})
+      .populate('teams head_referee snitch snitch_snatches')
+      .exec(function(err, games){
         if(err){return next(err);}
-        if (!team){return res.status(404).send('Team not found');}
 
-        Game
-          .find({teams: team._id})
-          .populate('teams head_referee snitch snitch_snatches')
-          .exec(function(err, games){
-            if(err){return next(err);}
-
-            res.json({games: games, team: team});
-          });
+        res.json({games: games, team: team});
       });
   });
 
   app.get('/teams/:id/people', function(req, res, next){
-    var id = req.params.id;
-    Team
-      .findOne(getQuery(id))
-      .exec(function(err, team){
+    Person
+      .find({"teams.0": req.params.id})
+      .exec(function(err, people){
         if(err){return next(err);}
-        if (!team){ return res.status(404).send('Team not found');}
 
-        Person
-          .find({"teams.0": team._id})
-          .exec(function(err, people){
-            if(err){return next(err);}
-
-            res.json({people: people, team: team});
-          });
+        res.json({people: people, team: team});
       });
   });
 
