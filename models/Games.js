@@ -5,12 +5,28 @@ var GameSchema = new mongoose.Schema({
   teams: {type: [{type: mongoose.Schema.Types.ObjectId, ref: "Team"}], required: true},
 
   // scores not required so that we can use these to schedule
-  scores: {type: [Number], default: [0,0]},
+  scores: {
+    type: [Number], 
+    default: [0,0], 
+    validate: [function(val){
+      if (val.length !== 2) return false;
+      if (val[0] % 10 !== 0 || val[1] % 10 !== 0) return false;
+      return true;
+    }, 'Must have 2 scores and be multiples of 10: [A, B]']
+  },
 
   // a complete 0 overtime game will always have an id at 0
   // a complete 1 overtime game may have a non-null at 1
   // a complete 2 overtime game may have between 1 and 3 non-null elements
-  snitch_snatches: {type: [mongoose.Schema.Types.ObjectId], ref: "Team", default: [null, null, null]},
+  snitch_snatches: {
+    type: [mongoose.Schema.Types.ObjectId], 
+    ref: "Team", 
+    default: [null, null, null],
+    validate: [function(val){
+      return val.length === 3;
+    }, 'Must have 3 snatches: [TEAM_I, null?, null?]']
+
+  },
 
   // number of overtimes
   overtimes: {type: Number, default: 0, min: 0, max: 2},

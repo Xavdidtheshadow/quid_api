@@ -5,8 +5,8 @@ var PersonSchema = new mongoose.Schema({
   first_name: {type: String, required: true, trim: true},
   last_name: {type: String, required: true, trim: true},
 
-  // this is the weak point - it'll be hard to reference if this is an open field
-  gender: {type: String, require: true, trim: true},
+  // there's no good way to do this 
+  // gender: {type: String, require: true, trim: true},
 
   // these must be unique
   email: {type: String, required: true, lowercase: true, trim: true, unique: true},
