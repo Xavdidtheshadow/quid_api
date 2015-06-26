@@ -28,7 +28,6 @@ module.exports = function(app) {
   app.post('/games', function(req, res, next){
     new Game(req.body).save(function(err, game){
       if(err){return next(err);}
-
       res.status(201).json(game);
     });
   });
@@ -40,6 +39,8 @@ module.exports = function(app) {
       .exec(function(err, game){
         if(err){return next(err);}
 
+        // basically game.merge(req.body);
+        // required so that it gets validated
         extend(game, req.body);
 
         game.save(function(err, game){

@@ -36,8 +36,16 @@ var GameSchema = new mongoose.Schema({
   duration: {type: Number, default: 0, min: 0},
 
   // staff info
-  head_referee: {type: mongoose.Schema.Types.ObjectId, ref: "Person", default: null},
-  snitch: {type: mongoose.Schema.Types.ObjectId, ref: "Person", default: null},
+  head_referee: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "Person", 
+    default: null
+  },
+  snitch: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "Person", 
+    default: null
+  },
 
   forfeit: {type: Boolean, default: false},
 

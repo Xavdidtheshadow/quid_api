@@ -3,14 +3,13 @@ module.exports = function(app) {
   var Team = mongoose.model('Team');
   var Game = mongoose.model('Game');
   var Person = mongoose.model('Person');
-  
+
   app.get('/teams', function(req, res, next){
     Team
       .find()
       .populate('league')
       .exec(function(err, teams){
         if(err){return next(err);}
-
         res.json(teams);
       });
   });
@@ -20,8 +19,6 @@ module.exports = function(app) {
       .findOne({_id: req.params.id})
       .exec(function(err, team){
         if(err){return next(err);}
-        if (!team){return res.status(404).send('Team not found');}
-
         res.json(team);
       });
   });
@@ -32,8 +29,7 @@ module.exports = function(app) {
       .populate('teams head_referee snitch snitch_snatches')
       .exec(function(err, games){
         if(err){return next(err);}
-
-        res.json({games: games, team: team});
+        res.json({games: games, team: req.params.id});
       });
   });
 
@@ -42,22 +38,15 @@ module.exports = function(app) {
       .find({"teams.0": req.params.id})
       .exec(function(err, people){
         if(err){return next(err);}
-
-        res.json({people: people, team: team});
+        res.json({people: people, team: req.params.id});
       });
   });
 
+  // create team
   app.post('/teams', function(req, res, next){
-    try {
-      var t = new Team(req.body);
-
-      t.save(function(err, team){
+      new Team(req.body).save(function(err, team){
         if(err){return next(err);}
-
-        res.json({status: 201, message: team._id});
+        res.status(201).json(team);
       });
-    } catch (e) {
-      return next(e);
-    }
   });    
 };

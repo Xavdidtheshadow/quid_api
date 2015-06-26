@@ -7,9 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var db = require('./config/db');
 
-
 var port = process.env.PORT || 1337;
-
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json()); 
@@ -49,7 +47,7 @@ require('./routes/teams')(app);
 app.get("/", function(request, response) {
     response.json({
       info: "https://github.com/quidtech/quid_api",
-      routes: [
+      basic_routes: [
         '/games',
         '/people',
         '/teams',

@@ -10,6 +10,7 @@ module.exports = function(app) {
       model: 'League',
       select: 'name code'
     };
+
     Person
       .find()
       .populate('teams')
@@ -19,7 +20,6 @@ module.exports = function(app) {
         // nested populate for league info
         Team.populate(people, opts, function(err, people){
           if(err){return next(err);}
-
           res.json(people);
         });
       });
@@ -31,19 +31,16 @@ module.exports = function(app) {
       .populate('teams')
       .exec(function(err, person){
         if(err){return next(err);}
-        if (!person){return res.status(404).send('Person not found');}
-
         res.json(person);
       });
   });
 
+  // make a new person
+  // if only it wasn't mutually exclusive with programming
   app.post("/people", function(req, res, next){
-    var p = new Person(req.body);
-
-    p.save(function(err, pers){
+    new Person(req.body).save(function(err, person){
       if(err){return next(err);}
-
-      res.json({status: 201, message: pers._id});
+      res.status(201).json(person);
     });
   });
 
