@@ -1,73 +1,82 @@
-// require things! 
 var express = require("express");
-var app = express();
-app.locals.dev = process.env.NODE_ENV !== 'production';
-
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var db = require('./config/db');
 
-var port = process.env.PORT || 1337;
+module.exports = function(){
+  // require things! 
+  var app = express();
+  app.locals.dev = process.env.NODE_ENV !== 'production';
+  
+  var url = require('./config/db')();
 
-app.use(bodyParser.urlencoded({ extended: true })); 
-app.use(bodyParser.json()); 
+  var port = process.env.PORT || 1337;
 
-// cors
-cors = require('./config/cors');
-app.use(cors);
-// print request
-app.use(function(req, res, next){
-  if (app.locals.dev) {
-    console.log(req.method + ' - ' + req.url);
-    if (req.method === 'POST') {
-      console.log(req.body);
+  app.use(bodyParser.urlencoded({ extended: true })); 
+  app.use(bodyParser.json()); 
+
+  // cors
+  cors = require('./config/cors');
+  app.use(cors);
+  // print request
+  app.use(function(req, res, next){
+    if (app.locals.dev) {
+      console.log(req.method + ' - ' + req.url);
+      if (req.method === 'POST') {
+        console.log(req.body);
+      }
+      next();
     }
-    next();
-  }
-});
+  });
 
-// API key
-require('./config/auth')(app);
+  // API key
+  require('./config/auth')(app);
 
-// mongoose
-mongoose.connect(db.url);
+  // mongoose
+  mongoose.connect(url);
 
-// register schemas
-require('./models/People.js');
-require('./models/Games.js');
-require('./models/Leagues.js');
-require('./models/Teams.js');
+  // register schemas
+  require('./models/People.js');
+  require('./models/Games.js');
+  require('./models/Leagues.js');
+  require('./models/Teams.js');
 
-// routes
-require('./routes/people')(app); 
-require('./routes/games')(app); 
-require('./routes/leagues')(app); 
-require('./routes/teams')(app); 
+  // routes
+  require('./routes/people')(app); 
+  require('./routes/games')(app); 
+  require('./routes/leagues')(app); 
+  require('./routes/teams')(app); 
 
-app.get("/", function(request, response) {
-    response.json({
-      info: "https://github.com/quidtech/quid_api",
-      basic_routes: [
-        '/games',
-        '/people',
-        '/teams',
-        '/leagues'
-      ]
-    });
-});
+  app.get("/", function(request, response) {
+      response.json({
+        info: "https://github.com/quidtech/quid_api",
+        basic_routes: [
+          '/games',
+          '/people',
+          '/teams',
+          '/leagues'
+        ]
+      });
+  });
 
-// catch-all error handling
-app.use(function (err, req, res, next) {
-    res.status(500);
-    // mongo errors have a code, otherwise show stacktrace
-    if (err.code) {
-      res.json({ error: err });
-    } else {
-      res.json({ error: err.stack });
+  // catch-all error handling
+  app.use(function (err, req, res, next) {
+      // mongo errors have a code, otherwise show stacktrace
+      if (err.name === 'ValidationError') {
+        res.status(400);
+        res.json({ 
+          error: Object.keys(err.errors).map(function(i) {
+            return err.errors[i].message;
+          })
+        });
+      } else {
+        res.status(500);
+        res.json({ error: err });
+      }
     }
-  }
-);
+  );
 
-// Start the app
-app.listen(port);
-console.log("App started on port " + port);
+  console.log("App started on port " + port);
+  // Start the app
+  return app.listen(port);
+  
+};
