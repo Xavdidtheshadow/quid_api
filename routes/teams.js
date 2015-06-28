@@ -9,7 +9,7 @@ module.exports = function(app) {
       .find()
       .populate('league')
       .exec(function(err, teams){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.json(teams);
       });
   });
@@ -18,7 +18,7 @@ module.exports = function(app) {
     Team
       .findOne({_id: req.params.id})
       .exec(function(err, team){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.json(team);
       });
   });
@@ -28,7 +28,7 @@ module.exports = function(app) {
       .find({teams: req.params.id})
       .populate('teams head_referee snitch snitch_snatches')
       .exec(function(err, games){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.json({games: games, team: req.params.id});
       });
   });
@@ -37,7 +37,7 @@ module.exports = function(app) {
     Person
       .find({"teams.0": req.params.id})
       .exec(function(err, people){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.json({people: people, team: req.params.id});
       });
   });
@@ -45,7 +45,7 @@ module.exports = function(app) {
   // create team
   app.post('/teams', function(req, res, next){
       new Team(req.body).save(function(err, team){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.status(201).json(team);
       });
   });    

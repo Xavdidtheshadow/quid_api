@@ -9,7 +9,7 @@ module.exports = function(app) {
       .find()
       .populate('teams head_referee snitch')
       .exec(function(err, games){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.json(games);
       });
   });
@@ -19,7 +19,7 @@ module.exports = function(app) {
       .findOne({_id: req.params.id})
       .populate("teams head_referee snitch")
       .exec(function(err, game){
-        if(err){return next(err);}
+        if(err){ return next(err); }
           res.json(game);
       });
   });
@@ -27,7 +27,7 @@ module.exports = function(app) {
   // create a new game
   app.post('/games', function(req, res, next){
     new Game(req.body).save(function(err, game){
-      if(err){return next(err);}
+      if(err){ return next(err); }
       res.status(201).json(game);
     });
   });
@@ -37,14 +37,14 @@ module.exports = function(app) {
     Game
       .findById(req.params.id)
       .exec(function(err, game){
-        if(err){return next(err);}
+        if(err){ return next(err); }
 
         // basically game.merge(req.body);
         // required so that it gets validated
         extend(game, req.body);
 
         game.save(function(err, game){
-          if(err){return next(err);}
+          if (err){ return next(err); }
           res.status(200).json(game);
         });
       });

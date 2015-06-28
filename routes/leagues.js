@@ -6,7 +6,7 @@ module.exports = function(app) {
   app.get('/leagues', function(req, res, next){
     League
       .find(function(err, teams){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.json(teams);
       });
   });
@@ -15,24 +15,24 @@ module.exports = function(app) {
     League
       .findOne({_id: req.params.id})
       .exec(function(err, league){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.json(league);
       });
   });
 
   app.get('/leagues/:id/teams', function(req, res, next){
-    League
-      .findOne({_id: req.params.id})
-      .exec(function(err, league){
-        if(err){return next(err);}
-        res.json(league);
+    Team
+      .find({league: req.params.id})
+      .exec(function(err, teams){
+        if(err){ return next(err); }
+        res.json({teams: teams, league: req.params.id});
       });
   });  
 
   // create a league
   app.post("/leagues", function(req, res, next){
     new League(req.body).save(function(err, league){
-      if(err){return next(err);}
+      if(err){ return next(err); }
       res.status(201).json(league);
     });
   });

@@ -15,11 +15,10 @@ module.exports = function(app) {
       .find()
       .populate('teams')
       .exec(function(err, people){
-        if(err){return next(err);}
-        
+        if(err){ return next(err); }
         // nested populate for league info
         Team.populate(people, opts, function(err, people){
-          if(err){return next(err);}
+          if(err){ return next(err); }
           res.json(people);
         });
       });
@@ -30,7 +29,7 @@ module.exports = function(app) {
       .findOne({"_id": req.params.id})
       .populate('teams')
       .exec(function(err, person){
-        if(err){return next(err);}
+        if(err){ return next(err); }
         res.json(person);
       });
   });
@@ -39,7 +38,7 @@ module.exports = function(app) {
   // if only it wasn't mutually exclusive with programming
   app.post("/people", function(req, res, next){
     new Person(req.body).save(function(err, person){
-      if(err){return next(err);}
+      if(err){ return next(err); }
       res.status(201).json(person);
     });
   });
