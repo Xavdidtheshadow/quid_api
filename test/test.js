@@ -58,6 +58,8 @@ describe('Routes', function(){
         });
     });
 
+    // Test PUT? 
+
     it('should create a new game', function(done){
       var g = {teams: [ids.team, ids.team]};
       request(url)
@@ -161,6 +163,68 @@ describe('Routes', function(){
         .post('/leagues?api_key=' + process.env.API_KEY)
         .send(l)
         .expect(400, done);
+    });
+  });
+
+  describe('People', function(){
+    it('should get all people', function(done){
+      request(url)
+        .get('/people')
+        .expect(200)
+        .end(function(err, res){
+          if (err) { throw err; }
+
+          assert(res.body.length > 0);
+
+          done();
+        });
+    });
+
+    it('should get a person', function(done){
+      request(url)
+        .get('/people/' + ids.person)
+        .expect(200)
+        .end(function(err, res){
+          if (err) { throw err; }
+
+          assert(res.body._id !== undefined);
+
+          done();
+        });
+    });
+
+    it('should create a new person', function(done){
+      var p = {
+        first_name: "Malcolm",
+        last_name: "Reynolds",
+        email: "mal_" + rand_id() + "@serentiy.com",
+        teams: [ids.team]
+      };
+      request(url)
+        .post('/people?api_key=' + process.env.API_KEY)
+        .send(p)
+        .expect(201)
+        .end(function(err, res){
+          if (err) { throw err; }
+
+          assert(res.body._id !== undefined);
+          done();
+        });
+    });
+
+    it('should validate a person', function(done){
+      // this is basically everything that can go wrong with a person
+      var p = {};
+      request(url)
+        .post('/people?api_key=' + process.env.API_KEY)
+        .send(p)
+        .expect(400)
+        .end(function(err, res){
+          if (err) { throw err; }
+          var j = JSON.parse(res.error.text);
+          assert(j.error.length > 2);
+          done();
+        });
     });
   });
 

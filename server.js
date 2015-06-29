@@ -77,7 +77,7 @@ module.exports = function(){
     }
   );
 
-  console.log("App started on port " + port);
+  if (app.locals.dev) { console.log("App started on port " + port); }
   // Start the app
   return app.listen(port);
   

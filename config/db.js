@@ -1,5 +1,4 @@
 module.exports = function() {
-  console.log('env is ' + process.env.NODE_ENV);
   var env = process.env.NODE_ENV || 'dev';
   if (env === 'production') {
     return process.env.MONGOLAB_URI;
