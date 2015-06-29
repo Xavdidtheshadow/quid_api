@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 module.exports = function(){
   // require things! 
   var app = express();
-  app.locals.dev = process.env.NODE_ENV !== 'production';
+  app.locals.dev = process.env.NODE_ENV === undefined;
   
   var url = require('./config/db')();
 
@@ -17,15 +17,17 @@ module.exports = function(){
   // cors
   cors = require('./config/cors');
   app.use(cors);
+  
   // print request
   app.use(function(req, res, next){
-    if (app.locals.dev) {
+    if (process.env.NODE_ENV !== 'test') {
       console.log(req.method + ' - ' + req.url);
       if (req.method === 'POST') {
         console.log(req.body);
       }
-      next();
     }
+    // this needs to be called no matter what
+    next();
   });
 
   // API key
