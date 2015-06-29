@@ -52,7 +52,8 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
 
-          assert(res.body._id !== undefined);
+          assert(res.body._id);
+          assert(res.body.teams[0]._id);
 
           done();
         });
@@ -69,7 +70,7 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
 
-          assert(res.body._id !== undefined);
+          assert(res.body._id);
           done();
         });
     });
@@ -93,8 +94,6 @@ describe('Routes', function(){
           done();
         });
     });
-
-
   });
 
   describe('Leagues', function(){
@@ -118,7 +117,7 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
 
-          assert(res.body._id !== undefined);
+          assert(res.body._id);
 
           done();
         });
@@ -152,7 +151,7 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
 
-          assert(res.body._id !== undefined);
+          assert(res.body._id);
           done();
         });
     });
@@ -187,7 +186,8 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
 
-          assert(res.body._id !== undefined);
+          assert(res.body._id);
+          assert(res.body.teams[0]._id);
 
           done();
         });
@@ -207,7 +207,7 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
 
-          assert(res.body._id !== undefined);
+          assert(res.body._id);
           done();
         });
     });
@@ -223,6 +223,66 @@ describe('Routes', function(){
           if (err) { throw err; }
           var j = JSON.parse(res.error.text);
           assert(j.error.length > 2);
+          done();
+        });
+    });
+  });
+
+  describe('Teams', function(){
+    it('should get all teams', function(done){
+      request(url)
+        .get('/teams')
+        .expect(200)
+        .end(function(err, res){
+          if (err) { throw err; }
+
+          assert(res.body.length > 0);
+
+          done();
+        });
+    });
+
+    it('should get a team', function(done){
+      request(url)
+        .get('/teams/' + ids.team)
+        .expect(200)
+        .end(function(err, res){
+          if (err) { throw err; }
+          assert(res.body._id);
+          assert(res.body.league.name);
+
+          done();
+        });
+    });
+
+    it('should create a new team', function(done){
+      var t = {
+        name: "Michigan Quidditch",
+        short_name: rand_id(),
+        league: ids.league
+      };
+      request(url)
+        .post('/teams?api_key=' + process.env.API_KEY)
+        .send(t)
+        .expect(201)
+        .end(function(err, res){
+          if (err) { throw err; }
+          assert(res.body._id);
+          done();
+        });
+    });
+
+    it('should validate a team', function(done){
+      // this is basically everything that can go wrong with a person
+      var t = { short_name: "MICHQ" };
+      request(url)
+        .post('/teams?api_key=' + process.env.API_KEY)
+        .send(t)
+        .expect(400)
+        .end(function(err, res){
+          if (err) { throw err; }
+          var j = JSON.parse(res.error.text);
+          assert(j.error.length > 1);
           done();
         });
     });

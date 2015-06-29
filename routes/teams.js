@@ -17,6 +17,7 @@ module.exports = function(app) {
   app.get('/teams/:id', function(req, res, next){
     Team
       .findOne({_id: req.params.id})
+      .populate('league')
       .exec(function(err, team){
         if(err){ return next(err); }
         res.json(team);
