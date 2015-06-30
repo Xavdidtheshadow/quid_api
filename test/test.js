@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var request = require('supertest');
 var assert = require('assert');
 var rand_id = require('../config/id.js');
+var rand_int = require('../config/rand.js');
 
 // starts the server
 var server = require('../server');
@@ -16,7 +17,7 @@ describe('Routes', function(){
     league: '5589092f534716a974c3789f',
     team: '558a5b252fda6b44c0279bc6',
     game: '558b938ff48494b8eeb3293f',
-    person: '558a61e7f3398ac2db91c04f'
+    person: '559247c27d1a101cbf1e0c71'
   };
   var app;
   before(function() {
@@ -90,7 +91,7 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
           var j = JSON.parse(res.error.text);
-          assert(j.error.length > 3);
+          assert(j.error.length === 4);
           done();
         });
     });
@@ -197,6 +198,7 @@ describe('Routes', function(){
       var p = {
         first_name: "Malcolm",
         last_name: "Reynolds",
+        dob: rand_int(2050, 9999) + "-09-20",
         email: "mal_" + rand_id() + "@serentiy.com",
         teams: [ids.team]
       };
@@ -222,7 +224,7 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
           var j = JSON.parse(res.error.text);
-          assert(j.error.length > 2);
+          assert(j.error.length === 3);
           done();
         });
     });
@@ -282,7 +284,7 @@ describe('Routes', function(){
         .end(function(err, res){
           if (err) { throw err; }
           var j = JSON.parse(res.error.text);
-          assert(j.error.length > 1);
+          assert(j.error.length === 2);
           done();
         });
     });

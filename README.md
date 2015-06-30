@@ -34,8 +34,35 @@ We currently maintain the following `GET` routes. Let us know if there are other
 * `/teams/:id/people` - get all people associated with a team
 * `/teams/:id/games` - get all games a team played in
 
-If you'd like an API key, contact [David](mailto:beamneocube@gmail.com?subject=quid_api%20key%20request) for more info.
+## Writing to the database
 
+If you'd like an API key so you and your league can write to the database, contact [David](mailto:beamneocube@gmail.com?subject=quid_api%20key%20request) for more info.
+
+### Quirks
+
+Everything should make sense, but just in case it doesn't, here are some common pitfalls.
+
+1. If you're leaving a field blank (which is fine for any non-required field), just don't submit it at all with your POST request. For example:
+
+javascript
+```
+# bad
+{
+    first_name: "Bruce",
+    last_name: "Wayne",
+    email: null
+}
+
+# good
+{
+    first_name: "Bruce",
+    last_name: "Wayne"
+}
+```
+
+2. Dates are parsed with javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse) function. It's really good about what it accepts, but definitely test if you're not sure if you're submitting dates correctly. 
+
+That's all for now! Will update more as they come.
 
 ## Development
 
@@ -51,8 +78,8 @@ If you'd like an API key, contact [David](mailto:beamneocube@gmail.com?subject=q
 In addition to the steps above, do the following: 
 
 1. Create a `.env` file with the following:
-  1. `MONGOLOAB_TEST_URI` set to `mongodb://localhost:27017/quidditch` to run tests against local.
-  2. `API_KEY` set to an arbitrary string.
+  * `MONGOLOAB_TEST_URI` set to `mongodb://localhost:27017/quidditch` to run tests against local.
+  * `API_KEY` set to an arbitrary string.
 2. Run `npm test`, which sets the environment to "test" and executes the test file with [Mocha](http://mochajs.org/).
 
 ### Contributing
