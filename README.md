@@ -42,25 +42,25 @@ If you'd like an API key so you and your league can write to the database, conta
 
 Everything should make sense, but just in case it doesn't, here are some common pitfalls.
 
-1. If you're leaving a field blank (which is fine for any non-required field), just don't submit it at all with your POST request. For example:
+* If you're leaving a field blank (which is fine for any non-required field), just don't submit it at all with your POST request. For example:
 
-javascript
-```
-# bad
+
+```javascript
+// bad
 {
     first_name: "Bruce",
     last_name: "Wayne",
     email: null
 }
 
-# good
+// good
 {
     first_name: "Bruce",
     last_name: "Wayne"
 }
 ```
 
-2. Dates are parsed with javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse) function. It's really good about what it accepts, but definitely test if you're not sure if you're submitting dates correctly. 
+* Dates are parsed with javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse) function. It's really good about what it accepts, but definitely test if you're not sure if you're submitting dates correctly. 
 
 That's all for now! Will update more as they come.
 
