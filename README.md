@@ -69,18 +69,16 @@ That's all for now! Will update more as they come.
 ### Running the server
 
 1. Install dependencies (`npm install`).
-1. Seed a local mongo database by running `npm seed`.
-2. Run `foreman start -f Procfile.dev`, which will run mongo and the server. 
-3. Go to `http://localhost:1337` to see your server in action!
+2. Seed a local mongo database by running `npm seed`.
+3. Run `foreman start -f Procfile.dev`, which will run mongo and the server. 
+4. Go to `http://localhost:1337` to see your server in action!
 
 ### Testing
 
-In addition to the steps above, do the following: 
+After steps 1 & 2 above, do the following: 
 
-1. Create a `.env` file with the following:
-  * `MONGOLOAB_TEST_URI` set to `mongodb://localhost:27017/quidditch` to run tests against local.
-  * `API_KEY` set to an arbitrary string.
-2. Run `npm test`, which sets the environment to "test" and executes the test file with [Mocha](http://mochajs.org/).
+1. In a terminal window, run `mongod`.
+2. In another, run [`mocha`](http://mochajs.org/).
 
 ### Contributing
 
